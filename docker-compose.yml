@@ -1,0 +1,37 @@
+version: "3"
+services:
+  app:
+    build: ./backend
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa-docker
+      REDIS_URL: redis://cache
+      NODE_ENV: development
+      PORT: 9000
+    ports:
+      - "9000:9000"
+    command: npm run docker:start
+    volumes:
+      - .:/app/db
+      - /app/medusa/node_modules
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: medusa-docker
+  
+  redis:
+    image: redis
+    container_name: cache
+    expose:
+      - 6379
+      
+  client:
+    build: ./admin
+    volumes:
+      - ./admin/src:/app/admin/src # Links the source files to the running container
