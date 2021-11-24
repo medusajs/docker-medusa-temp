@@ -1,9 +1,14 @@
-version: "3"
+version: "3.8"
 services:
-  app:
-    build: ./backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: backend:test
+    container_name: medusa-server
     depends_on:
       - postgres
+      - redis
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa-docker
       REDIS_URL: redis://cache
@@ -11,27 +16,45 @@ services:
       PORT: 9000
     ports:
       - "9000:9000"
-    command: npm run docker:start
     volumes:
-      - .:/app/db
-      - /app/medusa/node_modules
+      - ./backend:/app/medusa
 
   postgres:
     image: postgres:10.4
     ports:
-      - "35432:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: medusa-docker
-  
+
   redis:
     image: redis
     container_name: cache
     expose:
       - 6379
-      
-  client:
-    build: ./admin
-    volumes:
-      - ./admin/src:/app/admin/src # Links the source files to the running container
+
+  # admin:
+  #   build: ./admin
+  #   depends_on:
+  #     - backend
+  #   container_name: medusa-admin
+  #   environment:
+  #     NODE_OPTIONS: --openssl-legacy-provider
+  #   ports:
+  #     - "7000:7000"
+  #   # volumes:
+  #   - ./admin/src:/app/admin/src # Links the source files to the running container
+
+  # storefront:
+  #   build:
+  #     context: ./storefront
+  #     dockerfile: Dockerfile
+  #   image: storefront:test
+  #   container_name: medusa-storefront
+  #   # depends_on:
+  #   #   - backend
+  #   # environment:
+  #   #   GATSBY_STORE_URL: backend:9000
+  #   ports:
+  #     - "8000:8000"
