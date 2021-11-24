@@ -12,16 +12,6 @@ RUN npm install -g npm@latest
 
 RUN npm install -g @medusajs/medusa-cli
 
-RUN npm install --loglevel=error
-
 COPY . .
 
-RUN npm run build &> /dev/null
-
-EXPOSE 9000
-
-# CMD npm run seed
-
-# CMD echo 'test'
-
-ENTRYPOINT ["./check-db.sh"]
+ENTRYPOINT ["./develop.sh"]

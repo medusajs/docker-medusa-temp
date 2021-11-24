@@ -34,27 +34,28 @@ services:
     expose:
       - 6379
 
-  # admin:
-  #   build: ./admin
-  #   depends_on:
-  #     - backend
-  #   container_name: medusa-admin
-  #   environment:
-  #     NODE_OPTIONS: --openssl-legacy-provider
-  #   ports:
-  #     - "7000:7000"
-  #   # volumes:
-  #   - ./admin/src:/app/admin/src # Links the source files to the running container
+  admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    image: admin:test
+    depends_on:
+      - backend
+    container_name: medusa-admin
+    environment:
+      NODE_OPTIONS: --openssl-legacy-provider
+    ports:
+      - "7000:7000"
 
-  # storefront:
-  #   build:
-  #     context: ./storefront
-  #     dockerfile: Dockerfile
-  #   image: storefront:test
-  #   container_name: medusa-storefront
-  #   # depends_on:
-  #   #   - backend
-  #   # environment:
-  #   #   GATSBY_STORE_URL: backend:9000
-  #   ports:
-  #     - "8000:8000"
+  storefront:
+    build:
+      context: ./storefront
+      dockerfile: Dockerfile
+    image: storefront:test
+    container_name: medusa-storefront
+    depends_on:
+      - backend
+    volumes:
+      - ./storefront:/app/storefront
+    ports:
+      - "8000:8000"
