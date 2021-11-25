@@ -35,25 +35,23 @@ The files for both the <i>Medusa Server</i> and the <i>Storefront</i> are loaded
   </a>
 </p>
 
-<!-- ## Prerequisites
-
-This starter has minimal prerequisites and most of these will usually already be installed on your computer.
-
-- [Install Node.js](https://nodejs.org/en/download/)
-- [Install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [Install SQLite](https://www.sqlite.org/download.html) -->
+---
 
 ## Setting up your Medusa
 
----
+To set up Medusa in a development environment with Docker you should initially build the images since they are not published on dockerhub. This is accomplished by adding the `--build` flag as shown below:
 
-- Run docker compose
+```bash
+docker compose up --build
+```
+
+Having already built the Docker images you can run docker compose without the `--build` flag.
 
 ```
 docker compose up
 ```
 
-Your services are now running on the following ports:
+Your local Medusa setup is now running with each of the services occupying the following ports:
 
 <ul>
   <li><b>Medusa Server</b>: 9000
@@ -63,9 +61,9 @@ Your services are now running on the following ports:
   <li><b>redis</b>: 6379
 </ul>
 
-### Seeding your Medusa store
+_Note: If you change the dependencies of your projects by adding new packages you can simply rebuild that package with the same tag `test` and run `docker compose up` once again to update your environment._
 
----
+### Seeding your Medusa store
 
 To add seed data to your medusa store run this command in a seperate
 
@@ -73,9 +71,19 @@ To add seed data to your medusa store run this command in a seperate
 docker exec medusa-server medusa seed -f ./data/seed.json
 ```
 
-## Try it out
+## Running Medusa with docker in production
 
----
+This repository and each of the services contain dockerfiles for both development and production, named `Dockerfile` and `Dockerfile.prod` respectively. The `Dockerfile.prod` copies the local files from disk and builds a production ready image based on your local development progress. Your specific needs for a production like container might differ from the `Dockerfile.prod` but it should provide a template and an idea of the requirements for each of the basic services.
+
+To run the services in a production state `docker compose` is simply run with the `docker-compose.production.yml` file as well as the basic `docker-compose.yml` file as seen below. If you wish to build the production ready images and then start them run `docker compose up` with the `--build` flag as described above.
+
+```
+docker compose up -f docker-compose.yml -f docker-compose.production.yml up
+```
+
+`docker-compose.production.yml` contains production relevant overrides to the services described in the `docker-compose.yml` development file.
+
+## Try it out
 
 ```
 curl -X GET localhost:9000/store/products | python -m json.tool

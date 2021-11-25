@@ -14,4 +14,4 @@ RUN npm install -g @medusajs/medusa-cli
 
 RUN npm install --loglevel=error
 
-ENTRYPOINT ["./develop.sh"]
+ENTRYPOINT ["./develop.sh", "develop"]
