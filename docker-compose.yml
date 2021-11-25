@@ -16,8 +16,6 @@ services:
       PORT: 9000
     ports:
       - "9000:9000"
-    volumes:
-      - ./backend:/app/medusa
 
   postgres:
     image: postgres:10.4
@@ -55,7 +53,5 @@ services:
     container_name: medusa-storefront
     depends_on:
       - backend
-    volumes:
-      - ./storefront:/app/storefront
     ports:
       - "8000:8000"
