@@ -18,6 +18,7 @@ services:
       - "9000:9000"
     volumes:
       - ./backend:/app/medusa
+      - backend_node_modules:/app/medusa/node_modules
 
   postgres:
     image: postgres:10.4
@@ -57,5 +58,10 @@ services:
       - backend
     volumes:
       - ./storefront:/app/storefront
+      - storefront_node_modules:/app/storefront/node_modules
     ports:
       - "8000:8000"
+
+volumes:
+  storefront_node_modules:
+  backend_node_modules:
