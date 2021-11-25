@@ -14,8 +14,6 @@ services:
       REDIS_URL: redis://cache
       NODE_ENV: development
       PORT: 9000
-    ports:
-      - "9000:9000"
 
   postgres:
     image: postgres:10.4
@@ -42,8 +40,6 @@ services:
     container_name: medusa-admin
     environment:
       NODE_OPTIONS: --openssl-legacy-provider
-    ports:
-      - "7000:7000"
 
   storefront:
     build:
@@ -53,5 +49,3 @@ services:
     container_name: medusa-storefront
     depends_on:
       - backend
-    ports:
-      - "8000:8000"

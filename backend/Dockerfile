@@ -10,4 +10,4 @@ RUN npm install -g npm@latest
 
 RUN npm install -g @medusajs/medusa-cli
 
-ENTRYPOINT ["./develop.sh"]
+ENTRYPOINT ["./develop.sh", "develop"]
