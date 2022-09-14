@@ -115,3 +115,8 @@ Visit [docs.medusa-commerce.com](https://docs.medusa-comerce.com) for further gu
     Docs
   </a>
 </p>
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
